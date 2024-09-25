@@ -1,0 +1,139 @@
+package com.lcwda;
+
+import java.io.File;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        System.out.println( "prepare to send message" );
+        String message="Hello Ashish how are you!";
+        String subject="This is confirmation";
+        String to="ashish12345ggh@gmail.com";
+        String from="ashish.22scse2030444@galgotiasuniversity.edu.in";
+        
+       // sendEmail(message,subject,to,from);
+        sendAttach(message,subject,to,from);
+        
+        
+    }
+   private static void sendAttach(String message, String subject, String to, String from) {
+		// TODO Auto-generated method stub
+		String host="smtp.gmail.com";
+		 Properties properties= System.getProperties();
+		 System.out.println("PROPERTIES"+ properties);
+		 properties.put("mail.smtp.host", host);
+		 properties.put("mail.smtp.port", "465");
+		 properties.put("mail.smtp.ssl.enable","true");
+		 properties.put("mail.smtp.auth","true");
+		
+		 Session session=Session.getInstance(properties, new Authenticator()
+				 {
+
+					@Override
+					protected PasswordAuthentication getPasswordAuthentication() {
+						// TODO Auto-generated method stub
+						return new PasswordAuthentication("ashish.22scse2030444@galgotiasuniversity.edu.in","12345");
+					}
+			 
+				 });
+		session.setDebug(true);
+		MimeMessage m=new MimeMessage(session);
+		try {
+			
+		
+		m.setFrom(from);
+		m.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+		m.setSubject(subject);
+		//atachment
+		String path="C:\\java\\java-logo-png.png";
+		MimeMultipart mimeMultipart=new MimeMultipart();
+		MimeBodyPart textMime=new MimeBodyPart();
+		MimeBodyPart fileMime=new MimeBodyPart();
+		try {
+			textMime.setText(message);
+			File file=new File(path);
+		  fileMime.attachFile(file); 
+		  
+		  mimeMultipart.addBodyPart(textMime);
+		  mimeMultipart.addBodyPart(fileMime);
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		m.setContent(mimeMultipart);
+		
+		
+		
+		
+		
+		
+		Transport.send(m);
+		System.out.println("Send Succesfully.........");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	   
+	   
+	   
+	   
+		
+	}
+//this is for responisible  emails
+	private static void sendEmail(String message, String subject, String to, String from) {
+		// TODO Auto-generated method stub
+		String host="smtp.gmail.com";
+		 Properties properties= System.getProperties();
+		 System.out.println("PROPERTIES"+ properties);
+		 properties.put("mail.smtp.host", host);
+		 properties.put("mail.smtp.port", "465");
+		 properties.put("mail.smtp.ssl.enable","true");
+		 properties.put("mail.smtp.auth","true");
+		
+		 Session session=Session.getInstance(properties, new Authenticator()
+				 {
+
+					@Override
+					protected PasswordAuthentication getPasswordAuthentication() {
+						// TODO Auto-generated method stub
+						return new PasswordAuthentication("ashish.22scse2030444@galgotiasuniversity.edu.in","gu@12345");
+					}
+			 
+				 });
+		session.setDebug(true);
+		MimeMessage m=new MimeMessage(session);
+		try {
+			
+		
+		m.setFrom(from);
+		m.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+		m.setSubject(subject);
+		m.setText(message);
+		Transport.send(m);
+		System.out.println("Send Succesfully.........");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	}
